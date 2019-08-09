@@ -5,45 +5,40 @@ module Fastlane
   module Actions
     class XchtmlreportAction < Action
       def self.run(params)
+        binary_path = params[:binary_path]
+        if !File.file?(binary_path)
+          UI.user_error!('xchtmlreport binary not installed! https://github.com/TitouanVanBelle/XCTestHTMLReport')
+        end
+
         result_bundle_path = params[:result_bundle_path]
         if result_bundle_path.nil?
           result_bundle_path = Scan.cache[:result_bundle_path]
         end
+
         result_bundle_paths = params[:result_bundle_paths]
         if result_bundle_path and result_bundle_paths.empty?
           result_bundle_paths = [result_bundle_path]
         end
 
         if result_bundle_paths.nil? or result_bundle_paths.empty?
-          UI.user_error!("You must pass at least one result_bundle_path")
+          UI.user_error!('You must pass at least one result_bundle_path')
         end
 
-        binary_path = params[:binary_path]
-
-        if !File.file?(binary_path)
-          UI.user_error!("xchtmlreport binary not installed! https://github.com/TitouanVanBelle/XCTestHTMLReport")
-        end
         UI.message "Result bundle path: #{result_bundle_path}"
 
-        command = "#{binary_path}"
+        command_comps = [binary_path]
+        command_comps += result_bundle_paths.map { |path| "-r #{path}" }
+        command_comps.append '-j' if params[:enable_junit]
 
-        result_bundle_paths.each { |path|
-          command += " -r #{path}"
-        }
-
-        if params[:enable_junit]
-          command += " -j"
-        end
-
-        sh command
+        sh command_comps.join ' '
       end
 
       def self.description
-        "Xcode-like HTML report for Unit and UI Tests"
+        'Xcode-like HTML report for Unit and UI Tests'
       end
 
       def self.authors
-        ["XCTestHTMLReport: TitouanVanBelle", "plugin: chrisballinger"]
+        ['XCTestHTMLReport: TitouanVanBelle', 'plugin: chrisballinger']
       end
 
       def self.return_value
@@ -51,14 +46,14 @@ module Fastlane
       end
 
       def self.details
-        "https://github.com/TitouanVanBelle/XCTestHTMLReport"
+        'https://github.com/TitouanVanBelle/XCTestHTMLReport'
       end
 
       def self.available_options
         [
           FastlaneCore::ConfigItem.new(
             key: :result_bundle_path,
-            description: "Path to the result bundle from scan. After running scan you can use Scan.cache[:result_bundle_path]",
+            description: 'Path to the result bundle from scan. After running scan you can use Scan.cache[:result_bundle_path]',
             conflicting_options: [:result_bundle_paths],
             optional: true,
             is_string: true,

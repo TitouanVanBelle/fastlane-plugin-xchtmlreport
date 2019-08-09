@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = 'titouan.vanbelle@gmail.com'
 
   spec.summary       = 'Plugin for XCHTMLReport'
-  # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-xchtmlreport"
+  spec.homepage      = "https://github.com/TitouanVanBelle/fastlane-plugin-xchtmlreport"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)
