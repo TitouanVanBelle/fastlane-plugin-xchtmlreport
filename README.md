@@ -1,43 +1,90 @@
-# xchtmlreport plugin
+![title](https://i.imgur.com/yTtjLP6.png)
 
+## What is it?
+
+Fastlane plugin for XCHTMLReport
+
+![screenshot](https://i.imgur.com/roUjf3N.png)
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-xchtmlreport)
 
-## Getting Started
 
-This project is a [_fastlane_](https://github.com/fastlane/fastlane) plugin. To get started with `fastlane-plugin-xchtmlreport`, add it to your project by running:
+## Install
 
+- Install [XCHTMLReport](https://github.com/TitouanVanBelle/XCTestHTMLReport)
+- Run
 ```bash
 fastlane add_plugin xchtmlreport
 ```
 
-## About xchtmlreport
+## Usage
 
-Plugin for XCHTMLReport
+### Basic Usage
 
-**Note to author:** Add a more detailed description about this plugin here. If your plugin contains multiple actions, make sure to mention them here.
+- Add the following to your Scanfile
 
-## Example
-
-Check out the [example `Fastfile`](fastlane/Fastfile) to see how to use this plugin. Try it by cloning the repo, running `fastlane install_plugins` and `bundle exec fastlane test`.
-
-**Note to author:** Please set up a sample project to make it easy for users to explore what your plugin does. Provide everything that is necessary to try out the plugin in this project (including a sample Xcode/Android project if necessary)
-
-## Run tests for this plugin
-
-To run both the tests, and code style validation, run
-
-```
-rake
+```ruby
+result_bundle(true)
 ```
 
-To automatically fix many of the styling issues, use
+- Add a call to `xchtmlreport` after running your tests. For example
+
 ```
-rubocop -a
+lane :tests do
+  scan
+  xchtmlreport
+end
 ```
 
-## Issues and Feedback
+### Options
 
-For any other issues and feedback about this plugin, please submit it to this repository.
+#### Specify the path to the result bundle
+
+By default the plugin will use the default location of the result bundle which is under fastlane/test_output/ but your also have the ability to pass the path yourself
+
+```ruby
+xchtmlreport(
+  result_bundle_path: path_to_result_bundle
+)
+```
+
+You can also pass multiple paths
+
+```ruby
+xchtmlreport(
+  result_bundle_paths: [
+    path_to_ui_result_bundle,
+    path_to_unit_result_bundle
+  ]
+)
+```
+
+#### Specify path to xchtmlreport
+
+XCHTMLReport is by default install at /usr/local/bin/xchtmlreport. Should it be somewhere else you can pass the path to the binary to the plugin
+
+```ruby
+xchtmlreport(
+  binary_path: path_to_xchtmlreport
+)
+```
+
+### Enable JUnit reporting
+
+You can enable the JUnit reporting as well
+
+```ruby
+xchtmlreport(
+  enable_junit: true
+)
+```
+
+## Contribution
+
+Please create an issue whenever you find an issue or think a feature could be a good addition to XCTestHTMLReport's fastlane plugin. Always make sure to follow the [Contributing Guidelines](https://github.com/TitouanVanBelle/fastlane-plugin-xchtmlreport/blob/master/CONTRIBUTING.md). Feel free to take a shot at these issues.
+
+## License
+
+XCTestHTMLReport's fastlane plugin is [available under the MIT license](https://github.com/TitouanVanBelle/fastlane-plugin-xchtmlreport/blob/master/LICENSE).
 
 ## Troubleshooting
 

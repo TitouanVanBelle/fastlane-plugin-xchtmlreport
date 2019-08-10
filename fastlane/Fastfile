@@ -1,3 +1,4 @@
 lane :test do
+  scan
   xchtmlreport
 end
