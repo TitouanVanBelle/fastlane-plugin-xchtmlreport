@@ -27,7 +27,7 @@ module Fastlane
         UI.message("Result bundle path: #{result_bundle_path}")
 
         command_comps = [binary_path]
-        command_comps += result_bundle_paths.map { |path| "-r #{path}" }
+        command_comps += result_bundle_paths.map { |path| "-r \"#{path}\"" }
         command_comps.append('-j') if params[:enable_junit]
 
         sh(command_comps.join(' '))
