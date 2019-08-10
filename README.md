@@ -1,8 +1,9 @@
+![screenshot](https://i.imgur.com/roUjf3N.png)
+
 ## What is it?
 
 Fastlane plugin for XCHTMLReport
 
-![screenshot](https://i.imgur.com/roUjf3N.png)
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-xchtmlreport)
 
 
