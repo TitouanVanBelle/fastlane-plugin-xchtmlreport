@@ -1,5 +1,3 @@
-![title](https://i.imgur.com/yTtjLP6.png)
-
 ## What is it?
 
 Fastlane plugin for XCHTMLReport
