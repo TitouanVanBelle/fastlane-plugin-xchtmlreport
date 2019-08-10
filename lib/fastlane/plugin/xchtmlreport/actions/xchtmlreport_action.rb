@@ -6,7 +6,7 @@ module Fastlane
     class XchtmlreportAction < Action
       def self.run(params)
         binary_path = params[:binary_path]
-        if !File.file?(binary_path)
+        unless File.file?(binary_path)
           UI.user_error!('xchtmlreport binary not installed! https://github.com/TitouanVanBelle/XCTestHTMLReport')
         end
 
@@ -16,21 +16,21 @@ module Fastlane
         end
 
         result_bundle_paths = params[:result_bundle_paths]
-        if result_bundle_path and result_bundle_paths.empty?
+        if result_bundle_path && result_bundle_paths.empty?
           result_bundle_paths = [result_bundle_path]
         end
 
-        if result_bundle_paths.nil? or result_bundle_paths.empty?
+        if result_bundle_paths.nil? || result_bundle_paths.empty?
           UI.user_error!('You must pass at least one result_bundle_path')
         end
 
-        UI.message "Result bundle path: #{result_bundle_path}"
+        UI.message("Result bundle path: #{result_bundle_path}")
 
         command_comps = [binary_path]
         command_comps += result_bundle_paths.map { |path| "-r #{path}" }
-        command_comps.append '-j' if params[:enable_junit]
+        command_comps.append('-j') if params[:enable_junit]
 
-        sh command_comps.join ' '
+        sh(command_comps.join(' '))
       end
 
       def self.description
@@ -61,7 +61,7 @@ module Fastlane
               UI.user_error!("You can't use 'result_bundle_path' and 'result_bundle_paths' options in one run")
             end,
             verify_block: proc do |value|
-              UI.user_error!("Bad path to the result bundle given: #{value}") unless (value and File.directory?(value))
+              UI.user_error!("Bad path to the result bundle given: #{value}") unless value && File.directory?(value)
             end
           ),
 
@@ -76,9 +76,9 @@ module Fastlane
               UI.user_error!("You can't use 'result_bundle_path' and 'result_bundle_paths' options in one run")
             end,
             verify_block: proc do |value|
-              value.each { |path|
-                UI.user_error!("Bad path to the result bundle given: #{path}") unless (path and File.directory?(path))
-              }
+              value.each do |path|
+                UI.user_error!("Bad path to the result bundle given: #{path}") unless path && File.directory?(path)
+              end
             end
           ),
 
@@ -86,14 +86,16 @@ module Fastlane
             key: :binary_path,
             description: "Path to xchtmlreport binary",
             is_string: true, # true: verifies the input is a string, false: every kind of value
-            default_value: "/usr/local/bin/xchtmlreport"), # the default value if the user didn't provide one
+            default_value: "/usr/local/bin/xchtmlreport"
+          ), # the default value if the user didn't provide one
 
           FastlaneCore::ConfigItem.new(
             key: :enable_junit,
             type: Boolean,
             default_value: false,
             description: "Enables JUnit XML output 'report.junit'",
-            optional: true)
+            optional: true
+          )
         ]
       end
 
