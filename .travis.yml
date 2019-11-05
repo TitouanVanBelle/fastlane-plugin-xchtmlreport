@@ -1,4 +1,8 @@
-# os: osx # enable this if you need macOS support
+os: osx
 language: ruby
+osx_image: xcode11.4
 rvm:
-  - 2.2.4
+  - 2.6.6
+
+before_install:
+  - brew install --HEAD https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/develop/xchtmlreport.rb
