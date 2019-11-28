@@ -91,7 +91,6 @@ module Fastlane
 
           FastlaneCore::ConfigItem.new(
             key: :enable_junit,
-            type: Boolean,
             default_value: false,
             description: "Enables JUnit XML output 'report.junit'",
             optional: true
