@@ -29,6 +29,7 @@ module Fastlane
         command_comps = [binary_path]
         command_comps += result_bundle_paths.map { |path| "-r #{path}" }
         command_comps.append('-j') if params[:enable_junit]
+        command_comps.append('-i') if params[:inline_assets]
 
         sh(command_comps.join(' '))
       end
@@ -94,6 +95,14 @@ module Fastlane
             type: Boolean,
             default_value: false,
             description: "Enables JUnit XML output 'report.junit'",
+            optional: true
+          ),
+
+          FastlaneCore::ConfigItem.new(
+            key: :inline_assets,
+            is_string: false,
+            default_value: false,
+            description: "Inline all assets in the resulting html-file, making it heavier, but more portable",
             optional: true
           )
         ]
