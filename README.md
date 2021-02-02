@@ -29,7 +29,9 @@ result_bundle(true)
 
 ```
 lane :tests do
-  scan
+  scan (
+  	fail_build: false # Otherwise following steps won't be executed
+  )
   xchtmlreport
 end
 ```

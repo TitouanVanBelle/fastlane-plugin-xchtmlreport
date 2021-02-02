@@ -27,9 +27,10 @@ module Fastlane
         UI.message("Result bundle path: #{result_bundle_path}")
 
         command_comps = [binary_path]
-        command_comps += result_bundle_paths.map { |path| "-r #{path}" }
-        command_comps.append('-j') if params[:enable_junit]
-        command_comps.append('-i') if params[:inline_assets]
+        command_comps += result_bundle_paths.map { |path| "-r '#{path}'" }
+        command_comps << '-j' if params[:enable_junit]
+        command_comps << '-v' if params[:verbose]
+        command_comps << '-i' if params[:inline_assets]
 
         sh(command_comps.join(' '))
       end
@@ -57,7 +58,7 @@ module Fastlane
             description: 'Path to the result bundle from scan. After running scan you can use Scan.cache[:result_bundle_path]',
             conflicting_options: [:result_bundle_paths],
             optional: true,
-            is_string: true,
+            type: String,
             conflict_block: proc do |value|
               UI.user_error!("You can't use 'result_bundle_path' and 'result_bundle_paths' options in one run")
             end,
@@ -86,18 +87,25 @@ module Fastlane
           FastlaneCore::ConfigItem.new(
             key: :binary_path,
             description: "Path to xchtmlreport binary",
-            is_string: true, # true: verifies the input is a string, false: every kind of value
+            type: String,
             default_value: "/usr/local/bin/xchtmlreport"
           ), # the default value if the user didn't provide one
 
           FastlaneCore::ConfigItem.new(
             key: :enable_junit,
-            type: Boolean,
             default_value: false,
             description: "Enables JUnit XML output 'report.junit'",
             optional: true
           ),
 
+          FastlaneCore::ConfigItem.new(
+            key: :verbose,
+            type: Boolean,
+            default_value: false,
+            description: 'Provide additional logs',
+            optional: true
+          ),
+          
           FastlaneCore::ConfigItem.new(
             key: :inline_assets,
             is_string: false,
